@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState, type ReactNode } from 'react'
-import { clsx } from 'clsx'
 import { AddressFields, Checkbox, Form, Link, Price, SubmitButton, TextField, addressDraft, navigate, useAccount, useOrders, useStorefront, type AccountPage, type AddressField, type FieldProblem, type SavedAddress } from '@dripfunnel/storefront-core/theme'
 import { Notice } from '../Notice'
 import { OrderPill } from '../OrderPill'
@@ -40,7 +39,7 @@ export const AccountView = ({ section }: { section: Section }) => {
   }
   const first = page.account.name?.split(' ')[0]
   const tab = (href: string, label: string, on: boolean) => (
-    <Link href={href} className={clsx(styles.navItem, on && styles.navOn)} {...(on ? { 'aria-current': 'page' as const } : {})}>
+    <Link href={href} className={[styles.navItem, on && styles.navOn].filter(Boolean).join(' ')} {...(on ? { 'aria-current': 'page' as const } : {})}>
       {label}
     </Link>
   )

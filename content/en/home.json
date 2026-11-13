@@ -1,29 +1,119 @@
 {
   "hero": {
-    "eyebrow": "Welcome",
-    "title": "Welcome to {store}",
-    "lead": "Take a look around and find something you love.",
+    "eyebrow": "Crafted for the Indian home",
+    "title": "Objects that make a house feel like yours",
+    "lead": "Lighting, wall art and accents shaped by hand, chosen for rooms that are lived in and loved.",
     "shop": "Shop now",
     "story": "Our story",
     "image": "none",
-    "imageAlt": "A picture of our shop"
+    "imageAlt": "Lighting collection: gold pendants, a chandelier, a wall sconce and table and floor lamps in a warm living room",
+    "label": "Featured",
+    "previous": "Previous slide",
+    "next": "Next slide",
+    "goTo": "Show {name}",
+    "link": "/collections/all/",
+    "slide1": {
+      "desktop": "none",
+      "mobile": "none",
+      "alt": "-",
+      "eyebrow": "-",
+      "title": "-",
+      "text": "-",
+      "cta": "Shop now",
+      "link": "/collections/all/"
+    },
+    "slide2": {
+      "desktop": "none",
+      "mobile": "none",
+      "alt": "-",
+      "eyebrow": "-",
+      "title": "-",
+      "text": "-",
+      "cta": "Shop now",
+      "link": "/collections/all/"
+    },
+    "slide3": {
+      "desktop": "none",
+      "mobile": "none",
+      "alt": "-",
+      "eyebrow": "-",
+      "title": "-",
+      "text": "-",
+      "cta": "Shop now",
+      "link": "/collections/all/"
+    }
   },
   "story": {
-    "eyebrow": "Our story",
-    "title": "Who we are",
-    "body": "Write a few lines about who you are, what you make and why you started.",
-    "more": "Read more"
-  },
-  "signup": {
-    "title": "Keep in touch",
-    "body": "Create an account to follow your orders and check out faster.",
-    "action": "Create an account"
+    "row1": {
+      "image": "none",
+      "alt": "Artisans finishing a piece by hand",
+      "eyebrow": "Made by hand",
+      "title": "Pieces with a maker behind them",
+      "body": "Every lamp, frame and vessel we carry is shaped in small workshops across India. We work directly with artisans, so the craft stays honest and the details stay sharp.",
+      "cta": "Meet our makers",
+      "link": "/about/"
+    },
+    "row2": {
+      "image": "none",
+      "alt": "Lighting collection: gold pendants, a chandelier, a wall sconce and table and floor lamps in a warm living room",
+      "eyebrow": "Styled for living",
+      "title": "Light, texture and the art of a calm room",
+      "body": "Good interiors are built in layers: a warm pendant over the table, a sculptural lamp by the sofa, a frame that catches the eye. Our collections are designed to sit together, so it is easy to build a room that feels considered.",
+      "cta": "Explore lighting",
+      "link": "/collections/all/"
+    },
+    "row3": {
+      "image": "none",
+      "alt": "-",
+      "eyebrow": "-",
+      "title": "-",
+      "body": "-",
+      "cta": "-",
+      "link": "/"
+    }
   },
   "collections": {
-    "title": "Shop by collection"
+    "title": "Shop by collections",
+    "eyebrow": "Curated",
+    "slugs": "none"
   },
-  "newest": {
-    "title": "New in",
-    "all": "See all"
+  "layout": "hero,categories,collections,products,story,visit,trust",
+  "categories": {
+    "eyebrow": "Explore",
+    "title": "Shop by categories",
+    "all": "View all",
+    "pictured": "lighting",
+    "picturedAlt": "Lighting collection: gold pendants, a chandelier, a wall sconce and table and floor lamps in a warm living room"
+  },
+  "products": {
+    "eyebrow": "Just in",
+    "title": "New & noteworthy",
+    "newest": "New arrivals",
+    "best": "Customer favourites",
+    "more": "View more",
+    "tabs": "Choose a list"
+  },
+  "carousel": {
+    "previous": "Scroll back",
+    "next": "Scroll forward"
+  },
+  "visit": {
+    "eyebrow": "Visit us",
+    "title": "See it, touch it, take it home",
+    "lead": "Walk through our experience centre and see our collections styled in real rooms.",
+    "action": "Get directions",
+    "image": "none",
+    "imageAlt": "Inside our experience centre"
+  },
+  "trust": {
+    "label": "Why shop with us",
+    "oneTitle": "Delivery across India",
+    "oneText": "Packed with care, tracked to your door",
+    "twoTitle": "Easy returns",
+    "twoText": "Changed your mind? Send it back within 7 days",
+    "threeTitle": "Cash on delivery",
+    "threeText": "Pay when your order arrives",
+    "fourTitle": "Secure checkout",
+    "fourText": "Encrypted payments, always"
   }
 }

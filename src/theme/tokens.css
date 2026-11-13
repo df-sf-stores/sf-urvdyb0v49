@@ -5,8 +5,8 @@
   --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
+/* No margin rule here: .shell's margin: -8px (layout.module.css) cancels the browser's own 8px body margin. */
 body {
-  margin: 0;
   background: var(--color-surface);
   color: var(--color-text);
   font-family: var(--font-body);

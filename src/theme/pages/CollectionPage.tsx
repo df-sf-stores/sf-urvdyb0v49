@@ -1,4 +1,4 @@
-import { Breadcrumbs, Link, useCollection, useStorefront } from '@dripfunnel/storefront-core/theme'
+import { Breadcrumbs, Image, Link, useCollection, useStorefront } from '@dripfunnel/storefront-core/theme'
 import { Layout } from '../components/Layout'
 import { ListingResults } from '../components/ListingResults'
 import { Notice } from '../components/Notice'
@@ -10,6 +10,7 @@ export const CollectionPage = () => {
   const page = useCollection()
   const name = page.collection?.name ?? (page.all ? t('shop.collection.all') : null)
   const lead = page.collection ? page.collection.description : page.all ? t('shop.collection.allLead') : null
+  const image = page.collection?.image ?? null
   return (
     <Layout>
       <section className={styles.page}>
@@ -26,10 +27,22 @@ export const CollectionPage = () => {
         ) : (
           <>
             <Breadcrumbs crumbs={name ? [{ label: t('shop.crumbs.home'), href: '/' }, { label: name, href: page.collection?.href ?? '/collections/all/' }] : []} t={t} className={styles.crumbs} />
-            <header className={styles.intro}>
-              <h1 className={styles.title}>{name ?? t('shop.collection.loading')}</h1>
-              {lead ? <p className={styles.lead}>{lead}</p> : null}
-            </header>
+            {image ? (
+              <header className={styles.banner}>
+                <div className={styles.bannerPicture}>
+                  <Image image={image} alt={image.alt ?? ''} ratio={1.6} sizes="(min-width: 900px) 55vw, 100vw" className={styles.bannerImage} />
+                </div>
+                <div className={styles.bannerCopy}>
+                  <h1 className={styles.title}>{name ?? t('shop.collection.loading')}</h1>
+                  {lead ? <p className={styles.lead}>{lead}</p> : null}
+                </div>
+              </header>
+            ) : (
+              <header className={styles.bannerPlain}>
+                <h1 className={styles.title}>{name ?? t('shop.collection.loading')}</h1>
+                {lead ? <p className={styles.lead}>{lead}</p> : null}
+              </header>
+            )}
             <ListingResults listing={page} />
           </>
         )}

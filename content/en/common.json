@@ -5,13 +5,24 @@
     "submenu": "Submenu: {item}",
     "shop": "Shop",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "more": "More",
+    "close": "Close menu",
+    "drawer": "Shop by category",
+    "viewAll": "View all {item}",
+    "info": "Information"
   },
   "tools": {
     "search": "Search",
     "account": "Account",
     "cart": "Cart",
-    "cartCount": "Cart, {count, plural, one {# item} other {# items}}"
+    "cartCount": "Cart, {count, plural, one {# item} other {# items}}",
+    "searchOpen": "Open search",
+    "searchClose": "Close search",
+    "searchTitle": "What are you looking for?",
+    "searchPopular": "Popular categories",
+    "wishlist": "Wishlist",
+    "wishlistCount": "Wishlist, {count, plural, one {# item} other {# items}}"
   },
   "footer": {
     "note": "Thank you for shopping with us.",
@@ -23,6 +34,44 @@
     "privacy": "Privacy",
     "terms": "Terms",
     "legal": "Legal",
-    "notice": "Legal notice"
+    "notice": "Legal notice",
+    "copyright": "© 2026 {name}. All rights reserved.",
+    "poweredBy": "Powered by",
+    "poweredUrl": "https://www.dripfunnel.com/in/",
+    "poweredLogo": "DripFunnel",
+    "contact": "Get in touch",
+    "visit": "Experience centre",
+    "call": "Call",
+    "write": "Email",
+    "tel": "tel:{number}",
+    "salesLabel": "Sales",
+    "salesPhone": "-",
+    "returnsLabel": "Returns",
+    "returnsPhone": "-",
+    "deliveryLabel": "Delivery",
+    "deliveryPhone": "-",
+    "policies": "Policies",
+    "returnsPolicy": "Returns & Exchanges",
+    "privacyPolicy": "Privacy Policy",
+    "shippingPolicy": "Shipping & Delivery",
+    "termsPolicy": "Terms & Conditions",
+    "legalPolicy": "Legal Notice",
+    "information": "Information",
+    "aboutUs": "About Us",
+    "blog": "Journal",
+    "contactUs": "Contact Us",
+    "storeLocator": "Store Locator",
+    "orderTracking": "Order Tracking",
+    "connected": "Stay connected",
+    "connectedLead": "Be the first to see new collections, styling ideas and stories from our makers.",
+    "join": "Create an account",
+    "followOn": "Follow us on {network}"
+  },
+  "announcement": {
+    "label": "Store announcements",
+    "messages": "Handcrafted in India, delivered across the country|Easy returns within 7 days of delivery|New arrivals in lighting and wall décor every season",
+    "dismiss": "Hide announcements",
+    "pause": "Pause announcements",
+    "play": "Play announcements"
   }
 }

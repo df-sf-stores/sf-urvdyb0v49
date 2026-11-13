@@ -21,7 +21,8 @@
     "blog": "content/BlogPage",
     "blogPost": "content/BlogPostPage",
     "notFound": "NotFoundPage",
-    "degraded": "DegradedPage"
+    "degraded": "DegradedPage",
+    "accountWishlist": "account/WishlistPage"
   },
   "custom": {
     "/about": "AboutPage",

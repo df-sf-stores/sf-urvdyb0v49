@@ -5,7 +5,9 @@
   "card": {
     "from": "From",
     "soldOut": "Sold out",
-    "noPicture": "No picture yet"
+    "noPicture": "No picture yet",
+    "sale": "Sale",
+    "view": "View"
   },
   "listing": {
     "showing": "{count, plural, one {Showing # product} other {Showing # products}}",
@@ -28,7 +30,19 @@
     "loading": "Loading products",
     "failed": "We couldn't load these products",
     "failedLead": "Check your connection and try again.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "grid": "Columns",
+    "price": "Price",
+    "priceFrom": "Min",
+    "priceTo": "Max",
+    "priceApply": "Apply",
+    "done": "Show results",
+    "page": "Next page",
+    "pagePrevious": "Previous page",
+    "grid1": "One per row",
+    "grid2": "Two per row",
+    "grid3": "Three per row",
+    "grid4": "Four per row"
   },
   "collection": {
     "all": "All products",
@@ -85,7 +99,33 @@
       "sendHintExpiry": "We email it that morning. Leave it empty to send it now. It can be used for {months, plural, one {# month} other {# months}} after it's sent.",
       "add": "Add gift card to cart",
       "needed": "Add the recipient's name and email to add this gift card."
-    }
+    },
+    "taxes": "Inclusive of all taxes",
+    "save": "You save {percent}%",
+    "quantity": "Quantity",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "emi": "-",
+    "whatsapp": "Shop on WhatsApp",
+    "videoCall": "Shop on video call",
+    "videoCallLink": "none",
+    "description": "Description",
+    "shipping": "Shipping & returns",
+    "shippingText": "Every order is packed with care and shipped across India with tracking. If something isn't right, you can ask for a return within 7 days of delivery.",
+    "seller": "Seller information",
+    "sellerText": "Sold and shipped by {store}.",
+    "trust": {
+      "label": "Our promise",
+      "one": "Secure packaging",
+      "two": "Delivered as pictured",
+      "three": "7 day returns"
+    },
+    "zoom": "Open the picture full screen",
+    "closeZoom": "Close",
+    "photoOf": "Picture {number} of {total}",
+    "sticky": "Buy this product",
+    "saveItem": "Save to wishlist",
+    "savedItem": "Saved to wishlist"
   },
   "cart": {
     "title": "Your cart",

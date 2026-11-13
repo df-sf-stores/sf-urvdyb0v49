@@ -1,11 +1,11 @@
 .page {
   display: flex;
   box-sizing: border-box;
-  width: min(100%, 1240px);
+  width: min(100%, var(--page));
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-3);
   margin-inline: auto;
-  padding: 20px 16px 8px;
+  padding: var(--space-3) var(--gutter) 8px;
 }
 
 .crumbs {
@@ -22,54 +22,57 @@
 .intro {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 
 .eyebrow {
   margin: 0;
-  color: var(--muted);
+  color: var(--accent);
   font-size: 12px;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: var(--eyebrow-spacing);
   text-transform: uppercase;
 }
 
 .title {
-  max-width: 24ch;
+  max-width: 22ch;
   margin: 0;
   font-family: var(--heading-font);
-  font-size: 30px;
+  font-size: clamp(34px, 4.6vw, 56px);
   font-weight: var(--heading-weight);
   letter-spacing: var(--heading-spacing);
-  line-height: 1.15;
+  line-height: 1.05;
   overflow-wrap: anywhere;
   text-transform: var(--heading-case);
+  text-wrap: balance;
 }
 
 .lead {
-  max-width: 60ch;
+  max-width: 64ch;
   margin: 0;
-  color: var(--muted);
-  font-size: 15px;
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 1.7;
   overflow-wrap: anywhere;
 }
 
 .heading {
   margin: 0;
   font-family: var(--heading-font);
-  font-size: 22px;
+  font-size: clamp(26px, 3vw, 36px);
   font-weight: var(--heading-weight);
-  line-height: 1.2;
+  line-height: 1.15;
   text-transform: var(--heading-case);
 }
 
 .band {
   display: flex;
   box-sizing: border-box;
-  width: min(100%, 1240px);
+  width: min(100%, var(--page));
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-3);
   margin-inline: auto;
-  padding: 40px 16px 0;
+  padding: var(--space-6) var(--gutter) 0;
 }
 
 .bandHead {
@@ -82,21 +85,92 @@
 .textLink {
   color: var(--ink);
   font-size: 14px;
-  text-underline-offset: 3px;
+  font-weight: 600;
+  text-underline-offset: 4px;
 }
+
+.textLink:hover {
+  color: var(--accent);
+}
+
+/* ---------- Collection banner ---------- */
+
+.banner {
+  display: grid;
+  overflow: hidden;
+  align-items: center;
+  border-radius: var(--radius-lg);
+  background: var(--soft);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 900px) {
+  .banner {
+    min-height: 320px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  }
+}
+
+.bannerPicture {
+  height: 100%;
+  min-height: 220px;
+  order: -1;
+}
+
+@media (min-width: 900px) {
+  .bannerPicture {
+    order: 0;
+  }
+}
+
+.bannerImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bannerCopy {
+  display: grid;
+  gap: 12px;
+  padding: var(--space-4) clamp(20px, 4vw, 56px);
+}
+
+.bannerCopy .lead {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.bannerPlain {
+  display: grid;
+  gap: 10px;
+  padding: var(--space-4) 0 var(--space-1);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------- Listing ---------- */
 
 .listing,
 .listingFiltered {
   display: grid;
-  gap: 16px;
+  gap: var(--space-3);
   grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 1024px) {
+  .listingFiltered {
+    gap: var(--space-5);
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
 }
 
 .results {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: 14px;
+  gap: var(--space-3);
 }
 
 .muted {
@@ -110,7 +184,17 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--line);
+}
+
+.toolbarEnd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
 }
 
 .chips {
@@ -132,18 +216,27 @@
 .chipOn,
 .clear {
   display: inline-flex;
-  min-height: 36px;
+  min-height: 40px;
   align-items: center;
   gap: 6px;
-  padding: 0 14px;
+  padding: 0 16px;
   border: 1px solid var(--line);
-  border-radius: var(--button-radius);
+  border-radius: 999px;
   background: var(--surface);
   color: var(--ink);
+  cursor: pointer;
   font: inherit;
   font-size: 13px;
   text-decoration: none;
-  cursor: pointer;
+  transition:
+    border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.chip:hover,
+.chipLink:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .chipOn {
@@ -171,7 +264,6 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-left: auto;
   color: var(--muted);
   font-size: 14px;
 }
@@ -186,11 +278,71 @@
   font: inherit;
 }
 
+.columns {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: var(--button-radius);
+  background: var(--surface);
+}
+
+.columnButton,
+.columnButtonOn {
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.columnButtonOn {
+  background: var(--soft);
+  color: var(--ink);
+}
+
+.columnIcon {
+  width: 18px;
+  height: 18px;
+  fill: currentcolor;
+}
+
+.columnsDesktop {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .columnsDesktop {
+    display: contents;
+  }
+
+  .columnsPhone {
+    display: none;
+  }
+}
+
+/* ---------- Filters: a sidebar on desktop, a bottom sheet on phones and tablets ---------- */
+
 .filters {
   display: flex;
   min-width: 0;
   flex-direction: column;
   gap: 12px;
+}
+
+@media (min-width: 1024px) {
+  .filters {
+    position: sticky;
+    top: 72px;
+    align-self: start;
+  }
 }
 
 .filterToggle {
@@ -204,9 +356,24 @@
   border-radius: var(--button-radius);
   background: var(--surface);
   color: var(--ink);
+  cursor: pointer;
   font: inherit;
   font-weight: 600;
-  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .filterToggle {
+    display: none;
+  }
+}
+
+.filterIcon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-width: 1.6;
 }
 
 .count {
@@ -216,42 +383,153 @@
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: var(--ink);
-  color: var(--bg);
+  background: var(--accent);
+  color: var(--accent-ink);
   font-size: 12px;
 }
 
-.filterBody {
+.sheetScrim {
   display: none;
 }
 
+.filterBody,
 .filterBodyOpen {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .sheetScrim {
+    position: fixed;
+    z-index: 60;
+    display: block;
+    background: rgb(31 26 23 / 45%);
+    inset: 0;
+  }
+
+  .filterBodyOpen {
+    position: fixed;
+    z-index: 61;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    max-height: 82vh;
+    flex-direction: column;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background: var(--bg);
+    box-shadow: var(--shadow-lg);
+    animation: sheet-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .filterBody,
+  .filterBodyOpen {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.sheetHead {
   display: flex;
-  flex-direction: column;
+  min-height: 60px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px 0 var(--space-3);
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 1024px) {
+  .sheetHead {
+    display: none;
+  }
+}
+
+.sheetTitle {
+  margin: 0;
+  font-family: var(--heading-font);
+  font-size: 22px;
+  font-weight: var(--heading-weight);
+}
+
+.sheetClose {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.sheetBody {
+  overflow-y: auto;
+  flex: 1;
+  padding: 0 var(--space-3);
+}
+
+@media (min-width: 1024px) {
+  .sheetBody {
+    overflow: visible;
+    padding: 0;
+  }
+}
+
+.sheetFoot {
+  display: flex;
+  gap: 12px;
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  border-top: 1px solid var(--line);
+}
+
+.sheetFoot button {
+  flex: 1;
+}
+
+@media (min-width: 1024px) {
+  .sheetFoot {
+    display: none;
+  }
 }
 
 .facet {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 12px 0;
+  padding: var(--space-2) 0;
   border-bottom: 1px solid var(--line);
 }
 
 .facetName {
-  margin: 0 0 4px;
-  font-size: 14px;
+  margin: 0 0 6px;
+  font-size: 12px;
   font-weight: 600;
+  letter-spacing: var(--eyebrow-spacing);
+  text-transform: uppercase;
 }
 
 .check {
   display: flex;
-  min-height: 32px;
+  min-height: 36px;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   color: var(--ink-soft);
-  font-size: 14px;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .check input {
@@ -261,40 +539,174 @@
   accent-color: var(--accent);
 }
 
+.priceRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---------- Grid ---------- */
+
 .grid,
-.gridWide {
+.gridWide,
+.grid1,
+.grid2,
+.grid3,
+.grid4 {
   display: grid;
-  gap: 24px 14px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-2);
   margin: 0;
   padding: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   list-style: none;
+}
+
+.grid1 {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 640px) {
+  .grid,
+  .gridWide,
+  .grid1 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid,
+  .gridWide,
+  .grid1,
+  .grid2,
+  .grid3,
+  .grid4 {
+    gap: var(--space-5) var(--space-3);
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .gridWide,
+  .grid4,
+  .grid1 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .grid2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .grid2,
+  .grid3,
+  .grid4 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .cell {
   min-width: 0;
 }
 
+/* ---------- Product card ---------- */
+
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+}
+
+/* The wishlist heart, over the picture's top-right corner (the badge sits top-left). */
+.cardHeart,
+.cardHeartOn {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 12%);
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cardHeart:hover,
+.cardHeartOn {
+  color: var(--accent);
+}
+
+.cardHeart:hover {
+  transform: scale(1.06);
+}
+
+.cardHeart:focus-visible,
+.cardHeartOn:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.cardHeart:disabled,
+.cardHeartOn:disabled {
+  cursor: progress;
+}
+
+.cardHeart svg,
+.cardHeartOn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
+
+.cardHeartOn svg {
+  fill: currentcolor;
+}
+
+.cardHeart span,
+.cardHeartOn span {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .cardLink {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
   color: var(--ink);
   text-decoration: none;
 }
 
 .cardLink:focus-visible {
+  border-radius: var(--radius);
   outline: 2px solid var(--focus);
   outline-offset: 3px;
 }
 
-.cardPicture {
+.cardPicture,
+.cardPictureOut {
   position: relative;
   overflow: hidden;
   aspect-ratio: 4 / 5;
@@ -307,6 +719,49 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cardLink:hover .cardImage {
+  transform: scale(1.05);
+}
+
+.cardPictureOut .cardImage {
+  opacity: 0.6;
+}
+
+.cardCta {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+  display: none;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--button-radius);
+  background: rgb(255 255 255 / 92%);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  opacity: 0;
+  text-transform: uppercase;
+  transform: translateY(8px);
+  transition:
+    opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (min-width: 1024px) {
+  .cardCta {
+    display: flex;
+  }
+
+  .cardLink:hover .cardCta {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .noPicture {
@@ -319,31 +774,37 @@
 .badge,
 .soldOut {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--ink);
-  font-size: 12px;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--sale);
+  color: #ffffff;
+  font-size: 11px;
   font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .soldOut {
-  top: auto;
-  right: 10px;
-  bottom: 10px;
+  top: 12px;
+  right: 12px;
   left: auto;
   background: var(--ink);
   color: var(--bg);
 }
 
 .cardName {
+  display: -webkit-box;
+  overflow: hidden;
   margin: 0;
   font-family: var(--body-font);
   font-size: 15px;
   font-weight: 500;
+  line-height: 1.45;
   overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .cardPrice {
@@ -380,35 +841,60 @@
   font-size: 12px;
 }
 
+.skeletonPicture,
+.skeletonLine,
+.skeletonLineShort {
+  border-radius: var(--radius);
+  animation: shimmer 1.4s ease-in-out infinite;
+  background: linear-gradient(100deg, var(--soft) 30%, var(--tint) 50%, var(--soft) 70%);
+  background-size: 300% 100%;
+}
+
 .skeletonPicture {
   aspect-ratio: 4 / 5;
-  border-radius: var(--radius);
-  background: var(--soft);
 }
 
 .skeletonLine {
-  width: 60%;
+  width: 80%;
   height: 14px;
-  margin-top: 12px;
+  margin-top: 14px;
   border-radius: 6px;
-  background: var(--soft);
 }
+
+.skeletonLineShort {
+  width: 40%;
+  height: 14px;
+  margin-top: 8px;
+  border-radius: 6px;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* ---------- Notices and buttons ---------- */
 
 .notice {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 48px 16px;
+  gap: 12px;
+  padding: var(--space-6) var(--space-2);
   text-align: center;
 }
 
 .noticeTitle {
   margin: 0;
   font-family: var(--heading-font);
-  font-size: 24px;
+  font-size: clamp(28px, 3.4vw, 40px);
   font-weight: var(--heading-weight);
-  line-height: 1.2;
+  line-height: 1.15;
   overflow-wrap: anywhere;
   text-transform: var(--heading-case);
 }
@@ -423,36 +909,64 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
-  margin-top: 6px;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .primary,
 .secondary {
   display: inline-flex;
-  min-height: 48px;
+  min-height: 50px;
+  box-sizing: border-box;
   align-items: center;
-  justify-content: center;
   align-self: flex-start;
-  padding: 0 22px;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 26px;
   border: 1px solid var(--accent);
   border-radius: var(--button-radius);
   background: var(--accent);
   color: var(--accent-ink);
-  font: inherit;
-  font-weight: 600;
-  text-decoration: none;
   cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition:
+    background-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.primary:hover {
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
+  box-shadow: var(--shadow);
+}
+
+.primary:disabled {
+  border-color: var(--line);
+  background: var(--tint);
+  box-shadow: none;
+  color: var(--muted);
+  cursor: not-allowed;
 }
 
 .secondary {
-  border-color: var(--line);
-  background: var(--surface);
+  border-color: var(--ink);
+  background: transparent;
   color: var(--ink);
 }
 
+.secondary:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
 .secondary:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: default;
 }
 
@@ -466,7 +980,13 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding-top: 12px;
+  padding-top: var(--space-3);
+}
+
+.pager {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
 }
 
 .search {
@@ -527,7 +1047,16 @@
 }
 
 .search li span {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.search li span:first-of-type {
+  flex: 1 1 60%;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .search p {
@@ -632,4 +1161,58 @@
   .gridWide {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+}
+
+.priceField {
+  display: grid;
+  min-width: 0;
+  flex: 1 1 100px;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.priceField input {
+  width: 100%;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--button-radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 15px;
+}
+
+.priceField input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.facet .chip {
+  align-self: flex-start;
+  margin-top: 10px;
+}
+
+.columnButton:focus-visible,
+.columnButtonOn:focus-visible,
+.sheetClose:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.wishActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.wishActions .primary,
+.wishActions .secondary {
+  min-height: 44px;
+  flex: 1 1 auto;
+  padding: 0 16px;
 }

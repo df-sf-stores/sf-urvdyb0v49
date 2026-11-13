@@ -1,53 +1,95 @@
 .page {
   display: flex;
   box-sizing: border-box;
-  width: min(100%, 1240px);
+  width: min(100%, var(--page));
   flex-direction: column;
   align-items: flex-start;
-  gap: 14px;
+  gap: var(--space-2);
   margin-inline: auto;
-  padding: 40px 16px 8px;
+  padding: clamp(40px, 6vw, 80px) var(--gutter) 8px;
+}
+
+.pageCenter {
+  composes: page;
+  align-items: center;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: var(--eyebrow-spacing);
+  text-transform: uppercase;
 }
 
 .title {
-  max-width: 22ch;
+  max-width: 20ch;
   margin: 0;
   font-family: var(--heading-font);
-  font-size: 32px;
+  font-size: clamp(36px, 5vw, 60px);
   font-weight: var(--heading-weight);
-  letter-spacing: -0.01em;
-  line-height: 1.15;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
   overflow-wrap: anywhere;
   text-transform: var(--heading-case);
+  text-wrap: balance;
 }
 
 .lead {
-  max-width: 56ch;
+  max-width: 58ch;
   margin: 0;
   color: var(--ink-soft);
-  font-size: 16px;
+  font-size: clamp(16px, 1.3vw, 18px);
+  line-height: 1.75;
 }
 
-.action {
+.action,
+.ghost {
   display: inline-flex;
-  min-height: 48px;
+  min-height: 50px;
+  box-sizing: border-box;
   align-items: center;
-  padding: 0 22px;
+  padding: 0 26px;
+  border: 1px solid var(--accent);
   border-radius: var(--button-radius);
   background: var(--accent);
   color: var(--accent-ink);
   font-weight: 600;
   text-decoration: none;
+  transition:
+    background-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .action:hover {
-  filter: brightness(0.94);
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
 }
 
-.action:focus-visible,
-.choice:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
+.ghost {
+  border-color: var(--ink);
+  background: transparent;
+  color: var(--ink);
+}
+
+.ghost:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: inherit;
+  gap: 12px;
+  margin-top: var(--space-1);
+}
+
+.pageCenter .actions {
+  justify-content: center;
 }
 
 .choices {
@@ -73,59 +115,93 @@
 .split {
   display: grid;
   box-sizing: border-box;
-  grid-template-columns: minmax(0, 1fr);
-  width: min(100%, 1240px);
-  gap: 24px;
+  width: min(100%, var(--page));
+  align-items: center;
+  gap: var(--space-4);
   margin-inline: auto;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 0 var(--gutter);
+}
+
+.split .page {
+  padding-inline: 0;
 }
 
 .picture {
-  min-height: 280px;
-  margin-inline: 16px;
-  border-radius: var(--radius);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  aspect-ratio: 0.9;
   background: var(--picture-alt);
+}
+
+.cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .details {
   display: grid;
-  gap: 14px;
-  margin: 8px 0 0;
+  width: 100%;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
 }
 
 .detail {
   display: flex;
   flex-direction: column;
+  gap: 6px;
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
 }
 
 .term {
   color: var(--muted);
   font-size: 12px;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  letter-spacing: var(--eyebrow-spacing);
   text-transform: uppercase;
 }
 
 .value {
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
   overflow-wrap: anywhere;
 }
 
+.valueLink {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.valueLink:hover {
+  color: var(--accent);
+}
+
+.big {
+  margin: 0;
+  color: var(--tint);
+  font-family: var(--heading-font);
+  font-size: clamp(96px, 16vw, 200px);
+  font-weight: var(--heading-weight);
+  line-height: 0.9;
+}
+
+.action:focus-visible,
+.ghost:focus-visible,
+.choice:focus-visible,
+.valueLink:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
 @media (min-width: 900px) {
-  .page {
-    padding: 56px 32px 8px;
-  }
-
-  .title {
-    font-size: 40px;
-  }
-
   .split {
-    align-items: start;
+    gap: clamp(48px, 6vw, 96px);
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-
-  .picture {
-    min-height: 480px;
-    margin: 56px 32px 0 0;
   }
 }
