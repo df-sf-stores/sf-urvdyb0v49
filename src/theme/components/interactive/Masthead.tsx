@@ -23,7 +23,7 @@ import shop from '../../styles/shop.module.css'
 import styles from '../../styles/layout.module.css'
 
 /** How many top categories the desktop row shows before the rest go under "More". */
-const rowLimit = 7
+const rowLimit = 5
 
 const trimSlash = (href: string) => href.replace(/\/+$/, '')
 
@@ -249,6 +249,13 @@ const Drawer = ({ open, onClose, items, pictureOf }: { open: boolean; onClose: (
         </div>
         <nav className={styles.drawerBody} aria-label={t('common.nav.label')}>
           <ul className={styles.drawerList}>
+            <li className={styles.drawerItem}>
+              <div className={styles.drawerRow}>
+                <Link href="/collections/all/" className={styles.drawerLink}>
+                  {t('common.nav.shop')}
+                </Link>
+              </div>
+            </li>
             {items.map((item) => {
               const photo = pictureOf(item)
               const isOpen = expanded === item.id
@@ -444,18 +451,31 @@ export const Masthead = () => {
           </div>
         </div>
       </StickyFrame>
-      {items.length ? (
-        <StickyNav>
-          <div className={styles.navRowInner}>
-            <nav className={styles.nav} aria-label={t('common.nav.label')}>
-              {row.map((item) => (
-                <NavEntry key={item.id} item={item} open={panel === item.id} onOpen={setPanel} pictureOf={pictureOf} />
-              ))}
-              {rest.length ? <MoreEntry items={rest} open={panel === 'more'} onOpen={setPanel} /> : null}
-            </nav>
-          </div>
-        </StickyNav>
-      ) : null}
+      <StickyNav>
+        <div className={styles.navRowInner}>
+          <nav className={styles.nav} aria-label={t('common.nav.label')}>
+            <div className={styles.navItem}>
+              <Link href="/collections/all/" className={styles.navLink}>
+                {t('common.nav.shop')}
+              </Link>
+            </div>
+            {row.map((item) => (
+              <NavEntry key={item.id} item={item} open={panel === item.id} onOpen={setPanel} pictureOf={pictureOf} />
+            ))}
+            {rest.length ? <MoreEntry items={rest} open={panel === 'more'} onOpen={setPanel} /> : null}
+            <div className={styles.navItem}>
+              <Link href="/about/" className={styles.navLink}>
+                {t('common.nav.about')}
+              </Link>
+            </div>
+            <div className={styles.navItem}>
+              <Link href="/contact/" className={styles.navLink}>
+                {t('common.nav.contact')}
+              </Link>
+            </div>
+          </nav>
+        </div>
+      </StickyNav>
       <Drawer open={drawer} onClose={() => setDrawer(false)} items={items} pictureOf={pictureOf} />
       <SearchLayer open={search} onClose={() => setSearch(false)} items={items} />
     </>
