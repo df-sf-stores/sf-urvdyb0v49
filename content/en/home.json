@@ -41,9 +41,27 @@
       "text": "-",
       "cta": "Shop now",
       "link": "/collections/all/"
+    },
+    "seconds": "3",
+    "theme1": {
+      "alt": "Living room with colourful hand-painted tree canvases, a golden elephant triptych, a waterfall painting and a gold pendulum clock above a cream sofa",
+      "link": "/collections/wall-decor/"
+    },
+    "theme2": {
+      "alt": "Victorian table lamps with hand-painted floral bases and fringed shades on cream pedestals in warm light",
+      "link": "/collections/table-lamps/"
+    },
+    "theme3": {
+      "alt": "Victorian vases, a tissue box, a crystal dolphin and an elephant centrepiece on a marble console beneath a rainbow tree painting and a gear wall clock",
+      "link": "/collections/decorative-showpieces/"
+    },
+    "theme4": {
+      "alt": "Living room with a gold floor clock, a Roman numeral wall clock, a shield mirror, a framed football display and a pair of peacock figurines",
+      "link": "/collections/all/"
     }
   },
   "story": {
+    "last": "row6, row1",
     "row1": {
       "image": "none",
       "alt": "Artisans finishing a piece by hand",
@@ -64,25 +82,88 @@
     },
     "row3": {
       "image": "none",
-      "alt": "-",
-      "eyebrow": "-",
-      "title": "-",
-      "body": "-",
-      "cta": "-",
-      "link": "/"
+      "alt": "Two gold-framed shell mandala wall art pieces above a cream sofa on an olive green wall",
+      "eyebrow": "Wall décor",
+      "title": "Walls that tell your story",
+      "body": "From hand-painted canvases to sculpted metal and shell art, our wall décor turns a blank wall into the room's focal point. Pieces are made to be grouped or to stand alone, in finishes that catch the light through the day.",
+      "cta": "Explore wall décor",
+      "link": "/collections/wall-decor/"
+    },
+    "row4": {
+      "image": "none",
+      "alt": "A hand-painted elephant procession showpiece on a gilded tusk-shaped stand on a marble console",
+      "eyebrow": "Decorative showpieces",
+      "title": "Small pieces, big presence",
+      "body": "A gilded figurine on the console, a sculpted centrepiece on the coffee table: showpieces are where a room shows its personality. Ours are detailed by hand, made to be noticed and kept for years.",
+      "cta": "Explore showpieces",
+      "link": "/collections/decorative-showpieces/"
+    },
+    "row5": {
+      "image": "none",
+      "alt": "A white ceramic vase painted with blue peonies, with gold baroque handles and base, against a deep blue wall",
+      "eyebrow": "Vases",
+      "title": "Vessels worth displaying on their own",
+      "body": "Hand-painted ceramic, blue pottery and gilded classics: a good vase is beautiful with flowers and just as striking without. Choose one hero piece or build a cluster in varying heights.",
+      "cta": "Explore vases",
+      "link": "/collections/vases/"
+    },
+    "row6": {
+      "image": "none",
+      "alt": "Three gold shadow boxes of feathers, shells and coral above a cream sofa and a fluted marble coffee table",
+      "eyebrow": "Shadow boxes",
+      "title": "Depth, framed",
+      "body": "Shadow boxes bring texture to a wall that flat prints can't. Shells, feathers and sculpted forms sit in deep frames, so every piece casts its own shadow and changes with the light.",
+      "cta": "Explore shadow boxes",
+      "link": "/collections/shadow-boxes/"
+    },
+    "row7": {
+      "image": "none",
+      "alt": "A gilded Victorian vase with hand-painted pink and purple flowers and ornate gold handles against a plum wall",
+      "eyebrow": "Victorian collection",
+      "title": "Old-world grandeur, made for today",
+      "body": "Gilded handles, hand-painted florals and crackle-glazed finishes: our Victorian pieces bring the drama of a period home to a modern room. Set one on a console and let it hold the space.",
+      "cta": "Explore the collection",
+      "link": "/collections/victorian-collection/"
+    },
+    "row8": {
+      "image": "none",
+      "alt": "An amber glass two-tier pendant light glowing above a round marble dining table",
+      "eyebrow": "Italian lighting",
+      "title": "Light, designed the Italian way",
+      "body": "Clean silhouettes, tinted glass and a soft, even glow. Our Italian lighting is about restraint: one well-chosen pendant over the dining table changes how the whole room feels after dark.",
+      "cta": "Explore Italian lighting",
+      "link": "/collections/italian-lighting/"
+    },
+    "row9": {
+      "image": "none",
+      "alt": "A handblown glass dolphin in clear, amber and green glass on a light wooden side table",
+      "eyebrow": "Handblown glass",
+      "title": "Shaped by breath and fire",
+      "body": "Every piece is blown and shaped by hand, so no two are quite the same. Swirls of colour sit inside clear glass and catch the light from every angle, on a shelf, a desk or a sunny windowsill.",
+      "cta": "Explore handblown glass",
+      "link": "/collections/handblown-glass/"
     }
   },
   "collections": {
     "title": "Shop by collections",
     "eyebrow": "Curated",
-    "slugs": "victorian-blue-pottery, italian-design-lighting, handblown-glass, modern-abstract-art, scandinavian-design, vastu-inspiration, steel-stainless"
+    "slugs": "victorian-collection, blue-pottery, italian-lighting, handblown-glass, scandinavian-design, vastu-inspiration, pop-art"
   },
-  "layout": "hero,categories,collections,products,story,visit,trust",
+  "layout": "hero,feature,categories,feature2,collections,feature3,products,story,visit,trust",
+  "feature": {
+    "rows": "row3"
+  },
+  "feature2": {
+    "rows": "row2"
+  },
+  "feature3": {
+    "rows": "row5"
+  },
   "categories": {
     "eyebrow": "Explore",
     "title": "Shop by categories",
     "all": "View all",
-    "slugs": "wall-decor, lighting, table-decor, furniture, vases, candle-stands-holders, homeware, planters-plants",
+    "slugs": "lighting, table-lamps, wall-decor, wall-clocks, hand-painted-wall-art, hand-painted-international-artist, crystal-glass-paintings, shadow-boxes, decorative-showpieces, vases, planters, accent-table",
     "pictured": "lighting",
     "picturedAlt": "Lighting collection: gold pendants, a chandelier, a wall sconce and table and floor lamps in a warm living room"
   },

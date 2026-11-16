@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type Dispatch, type ReactNode, type SetStateAction } from 'react'
 import {
   Image,
   Link,
@@ -15,6 +15,7 @@ import {
   useScrollProgress,
   useStorefront,
   useWishlist,
+  type CollectionCard,
   type MenuItem,
   type Photo,
 } from '@dripfunnel/storefront-core/theme'
@@ -30,16 +31,52 @@ const trimSlash = (href: string) => href.replace(/\/+$/, '')
 /** Words for the address's query; navigate() encodes the rest, so only what would split the query is escaped. */
 const queryValue = (words: string) => words.replace(/[%&#+=]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`)
 
+/** A collection's name as the menu shows it: each word starting with a capital ("wall decor" → "Wall Decor"). */
+const titled = (name: string) => name.replace(/(^|\s)(\p{Ll})/gu, (_, gap: string, c: string) => gap + c.toUpperCase())
+
 /**
- * The header's categories: the merchant's menu (Storefront › Navigation), or, while it has no items, the store's own
- * collections, so the row is never empty and nothing is written into the theme.
+ * The menu the content describes (common.nav.groups): groups split by "|", each "Label: parent > child, child", the slugs
+ * the store's collections' addresses end in. "all" as the parent links to every product; a slug the store doesn't have is
+ * left out. "-" leaves the content's menu out.
+ */
+const groupedMenu = (spec: string, collections: CollectionCard[]): MenuItem[] => {
+  const bySlug = new Map(collections.map((c) => [trimSlash(c.href).split('/').pop() ?? '', c]))
+  return spec
+    .split('|')
+    .map((g) => g.trim())
+    .filter((g) => g !== '' && g !== '-')
+    .flatMap((group, i) => {
+      const colon = group.indexOf(':')
+      if (colon < 1) return []
+      const label = group.slice(0, colon).trim()
+      const [parent = '', rest = ''] = group.slice(colon + 1).split('>')
+      const own = bySlug.get(parent.trim())
+      const children = rest
+        .split(',')
+        .map((s) => bySlug.get(s.trim()))
+        .filter((c): c is CollectionCard => c !== undefined)
+        .map((c) => ({ id: c.id, label: titled(c.name), href: c.href, children: [] }))
+      if (!own && children.length === 0) return []
+      return [{ id: own?.id ?? `group-${i}`, label, href: own?.href ?? '/collections/all/', children }]
+    })
+}
+
+/**
+ * The header's categories: the merchant's menu (Storefront › Navigation); while it has no items, the groups the content
+ * names (common.nav.groups), else the store's own collections, so the row is never empty.
  */
 const useNavigation = () => {
+  const { t } = useStorefront()
   const menu = useMenu()
   const { collections } = useCollections({ first: 50 })
   const pictures = new Map<string, Photo>()
   for (const c of collections) if (c.image) pictures.set(trimSlash(c.href), c.image)
-  const items: MenuItem[] = menu.items.length ? menu.items : collections.map((c) => ({ id: c.id, label: c.name, href: c.href, children: [] }))
+  const grouped = groupedMenu(t('common.nav.groups'), collections)
+  const items: MenuItem[] = menu.items.length
+    ? menu.items
+    : grouped.length
+      ? grouped
+      : collections.map((c) => ({ id: c.id, label: titled(c.name), href: c.href, children: [] }))
   const pictureOf = (item: MenuItem) => pictures.get(trimSlash(item.href)) ?? null
   return { items, pictureOf, ready: menu.status !== 'loading' }
 }
@@ -98,25 +135,51 @@ const StickyNav = ({ children }: { children: ReactNode }) => {
   return <div className={progress > 0 ? styles.navRowStuck : styles.navRow}>{children}</div>
 }
 
-/** One top category on the desktop row; with sub-links it opens a mega menu of links and pictures on hover or press. */
-const NavEntry = ({ item, open, onOpen, pictureOf }: { item: MenuItem; open: boolean; onOpen: (id: string | null) => void; pictureOf: (item: MenuItem) => Photo | null }) => {
+/**
+ * A dropdown under the category row, the full width of the page: a heading with its "view all" link, then a card per
+ * category (its picture and name), four to a line.
+ */
+const MegaPanel = ({ more, open, heading, allLabel, allHref, entries, pictureOf }: { more?: boolean; open: boolean; heading: string; allLabel: string; allHref?: string; entries: MenuItem[]; pictureOf: (item: MenuItem) => Photo | null }) => (
+  <div id={more ? 'nav-more' : undefined} className={open ? styles.megaOpen : styles.mega}>
+    <div className={styles.megaInner}>
+      <div className={styles.megaHead}>
+        <p className={styles.megaTitle}>{heading}</p>
+        <Link href={allHref ?? '/collections/all/'} className={styles.megaAll}>
+          {allLabel}
+        </Link>
+      </div>
+      <ul className={styles.megaCards}>
+        {entries.map((entry) => {
+          const photo = pictureOf(entry)
+          return (
+            <li key={entry.id}>
+              <Link href={entry.href} className={styles.megaCard}>
+                <span className={styles.megaPicture}>{photo ? <Image image={photo} alt="" ratio={1.6} sizes="300px" className={styles.megaImage} /> : null}</span>
+                <span>{entry.label}</span>
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
+  </div>
+)
+
+/**
+ * One top category on the desktop row: just its name, with no arrow. With sub-links it opens a dropdown of them while
+ * the mouse is over it, or while the keyboard is inside it; Escape closes it.
+ */
+const NavEntry = ({ item, open, onOpen, pictureOf }: { item: MenuItem; open: boolean; onOpen: Dispatch<SetStateAction<string | null>>; pictureOf: (item: MenuItem) => Photo | null }) => {
   const { t } = useStorefront()
   const leaving = useRef<ReturnType<typeof setTimeout>>(undefined)
-  const toggle = useRef<HTMLButtonElement>(null)
   const hasPanel = item.children.length > 0
-  const cards = [...item.children, ...(item.children.length ? [] : [item])]
-    .map((c) => ({ item: c, photo: pictureOf(c) }))
-    .filter((c): c is { item: MenuItem; photo: Photo } => c.photo !== null)
-    .slice(0, 4)
-  const own = pictureOf(item)
-  const shownCards = cards.length ? cards : own ? [{ item, photo: own }] : []
   const enter = () => {
     clearTimeout(leaving.current)
     if (hasPanel) onOpen(item.id)
   }
   const leave = () => {
     clearTimeout(leaving.current)
-    leaving.current = setTimeout(() => onOpen(null), 140)
+    leaving.current = setTimeout(() => onOpen((o) => (o === item.id ? null : o)), 140)
   }
   useEffect(() => () => clearTimeout(leaving.current), [])
   return (
@@ -129,93 +192,57 @@ const NavEntry = ({ item, open, onOpen, pictureOf }: { item: MenuItem; open: boo
         if (e.pointerType === 'mouse') leave()
       }}
       onKeyDown={(e) => {
-        if (e.key !== 'Escape' || !open) return
-        onOpen(null)
-        toggle.current?.focus()
+        if (e.key === 'Escape' && open) onOpen(null)
       }}
-      onFocus={() => clearTimeout(leaving.current)}
+      onFocus={enter}
       onBlur={() => {
         clearTimeout(leaving.current)
-        leaving.current = setTimeout(() => onOpen(null), 0)
+        leaving.current = setTimeout(() => onOpen((o) => (o === item.id ? null : o)), 0)
       }}
     >
       <Link href={item.href} className={styles.navLink}>
         {item.label}
       </Link>
-      {hasPanel ? (
-        <>
-          <button ref={toggle} type="button" className={styles.navLink} aria-expanded={open} aria-label={t('common.nav.submenu', { item: item.label })} onClick={() => onOpen(open ? null : item.id)}>
-            <CaretIcon className={styles.caret} />
-          </button>
-          <div className={open ? styles.megaOpen : styles.mega}>
-            <div className={styles.megaInner}>
-              <div>
-                <p className={styles.megaTitle}>{item.label}</p>
-                <ul className={styles.megaLinks}>
-                  {item.children.map((child) => (
-                    <li key={child.id}>
-                      <Link href={child.href} className={styles.megaLink}>
-                        {child.label}
-                      </Link>
-                    </li>
-                  ))}
-                  <li>
-                    <Link href={item.href} className={styles.megaAll}>
-                      {t('common.nav.viewAll', { item: item.label })}
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-              {shownCards.length ? (
-                <div className={styles.megaCards}>
-                  {shownCards.map((c) => (
-                    <Link key={c.item.id} href={c.item.href} className={styles.megaCard}>
-                      <span className={styles.megaPicture}>
-                        <Image image={c.photo} alt={c.photo.alt ?? c.item.label} ratio={0.8} sizes="240px" className={styles.megaImage} />
-                      </span>
-                      <span>{c.item.label}</span>
-                    </Link>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-          </div>
-        </>
-      ) : null}
+      {hasPanel ? <MegaPanel open={open} heading={item.label} allLabel={t('common.nav.viewAll', { item: item.label })} allHref={item.href} entries={item.children} pictureOf={pictureOf} /> : null}
     </div>
   )
 }
 
-/** The rest of the categories, once there are more than the row holds. */
-const MoreEntry = ({ items, open, onOpen }: { items: MenuItem[]; open: boolean; onOpen: (id: string | null) => void }) => {
+
+/** The rest of the categories, once there are more than the row holds: the same dropdown, on hover, focus or press. */
+const MoreEntry = ({ items, open, onOpen, pictureOf }: { items: MenuItem[]; open: boolean; onOpen: Dispatch<SetStateAction<string | null>>; pictureOf: (item: MenuItem) => Photo | null }) => {
   const { t } = useStorefront()
   const leaving = useRef<ReturnType<typeof setTimeout>>(undefined)
   useEffect(() => () => clearTimeout(leaving.current), [])
   return (
     <div
-      className={styles.more}
+      className={open ? styles.navItemOpen : styles.navItem}
+      onPointerEnter={(e) => {
+        if (e.pointerType !== 'mouse') return
+        clearTimeout(leaving.current)
+        onOpen('more')
+      }}
+      onPointerLeave={(e) => {
+        if (e.pointerType !== 'mouse') return
+        clearTimeout(leaving.current)
+        leaving.current = setTimeout(() => onOpen((o) => (o === 'more' ? null : o)), 140)
+      }}
       onKeyDown={(e) => {
         if (e.key === 'Escape') onOpen(null)
       }}
-      onFocus={() => clearTimeout(leaving.current)}
+      onFocus={() => {
+        clearTimeout(leaving.current)
+        onOpen('more')
+      }}
       onBlur={() => {
         clearTimeout(leaving.current)
-        leaving.current = setTimeout(() => onOpen(null), 0)
+        leaving.current = setTimeout(() => onOpen((o) => (o === 'more' ? null : o)), 0)
       }}
     >
-      <button type="button" className={styles.navLink} aria-expanded={open} aria-controls="nav-more" onClick={() => onOpen(open ? null : 'more')}>
+      <button type="button" className={styles.navLink} aria-expanded={open} aria-controls="nav-more" onClick={() => onOpen('more')}>
         {t('common.nav.more')}
-        <CaretIcon className={styles.caret} />
       </button>
-      <ul id="nav-more" className={styles.moreMenu} hidden={!open}>
-        {items.map((item) => (
-          <li key={item.id}>
-            <Link href={item.href} className={styles.moreLink}>
-              {item.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <MegaPanel more open={open} heading={t('common.nav.more')} allLabel={t('common.footer.all')} entries={items} pictureOf={pictureOf} />
     </div>
   )
 }
@@ -462,7 +489,7 @@ export const Masthead = () => {
             {row.map((item) => (
               <NavEntry key={item.id} item={item} open={panel === item.id} onOpen={setPanel} pictureOf={pictureOf} />
             ))}
-            {rest.length ? <MoreEntry items={rest} open={panel === 'more'} onOpen={setPanel} /> : null}
+            {rest.length ? <MoreEntry items={rest} open={panel === 'more'} onOpen={setPanel} pictureOf={pictureOf} /> : null}
             <div className={styles.navItem}>
               <Link href="/about/" className={styles.navLink}>
                 {t('common.nav.about')}

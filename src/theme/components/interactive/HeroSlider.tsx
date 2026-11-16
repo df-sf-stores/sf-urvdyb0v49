@@ -1,18 +1,21 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link, MerchantImage, ThemeImage, useReducedMotion, useStorefront } from '@dripfunnel/storefront-core/theme'
 import { ArrowIcon } from '../Icons'
 import styles from '../../styles/home.module.css'
 
 type Slide = { desktop: string; mobile: string; alt: string; eyebrow: string; title: string; text: string; cta: string; link: string }
+/** A slide drawn from the theme's own banners, a 3:1 picture from 768px and a square one on phones: the whole slide is the link. */
+type ThemeSlide = { id: string; picture: ReactNode; phone: ReactNode; alt: string; link: string }
 
 /** "-" (or "none" for a picture) is how the merchant leaves a field out in the content. */
 const given = (words: string) => words.trim() !== '' && words.trim() !== '-' && words.trim() !== 'none'
 
 /**
  * The hero: the merchant's slides from Storefront › Assets (a desktop and a phone picture each), cross-fading on their
- * own, with dots, arrows and swipe. With no slide set up it shows the editorial hero beside its square picture: the merchant's home.hero.image, else the theme's lighting image.
+ * own every home.hero.seconds, with dots, arrows and swipe. With no slide set up it shows the theme's own four banners
+ * (src/theme/media/slider-1…4.webp), each a 3:1 picture from 768px and a square slider-N-mobile.webp on phones, linking to home.hero.themeN.link.
  */
 export const HeroSlider = () => {
   const { t } = useStorefront()
@@ -49,45 +52,49 @@ export const HeroSlider = () => {
       link: t('home.hero.slide3.link'),
     },
   ]
-  const slides = all.filter((s) => given(s.desktop))
+  const merchant = all.filter((s) => given(s.desktop))
+  const theme: ThemeSlide[] = [
+    {
+      id: 'theme1',
+      alt: t('home.hero.theme1.alt'),
+      link: t('home.hero.theme1.link'),
+      picture: <ThemeImage src="slider-1.webp" alt={t('home.hero.theme1.alt')} ratio={3} sizes="100vw" className={styles.slideImage} />,
+      phone: <ThemeImage src="slider-1-mobile.webp" alt={t('home.hero.theme1.alt')} ratio={1} sizes="100vw" className={styles.slideImage} />,
+    },
+    {
+      id: 'theme2',
+      alt: t('home.hero.theme2.alt'),
+      link: t('home.hero.theme2.link'),
+      picture: <ThemeImage src="slider-2.webp" alt={t('home.hero.theme2.alt')} ratio={3} sizes="100vw" className={styles.slideImage} />,
+      phone: <ThemeImage src="slider-2-mobile.webp" alt={t('home.hero.theme2.alt')} ratio={1} sizes="100vw" className={styles.slideImage} />,
+    },
+    {
+      id: 'theme3',
+      alt: t('home.hero.theme3.alt'),
+      link: t('home.hero.theme3.link'),
+      picture: <ThemeImage src="slider-3.webp" alt={t('home.hero.theme3.alt')} ratio={3} sizes="100vw" className={styles.slideImage} />,
+      phone: <ThemeImage src="slider-3-mobile.webp" alt={t('home.hero.theme3.alt')} ratio={1} sizes="100vw" className={styles.slideImage} />,
+    },
+    {
+      id: 'theme4',
+      alt: t('home.hero.theme4.alt'),
+      link: t('home.hero.theme4.link'),
+      picture: <ThemeImage src="slider-4.webp" alt={t('home.hero.theme4.alt')} ratio={3} sizes="100vw" className={styles.slideImage} />,
+      phone: <ThemeImage src="slider-4-mobile.webp" alt={t('home.hero.theme4.alt')} ratio={1} sizes="100vw" className={styles.slideImage} />,
+    },
+  ]
+  const own = merchant.length > 0
+  const seconds = Number(t('home.hero.seconds'))
+  const every = Number.isFinite(seconds) && seconds >= 1 ? seconds * 1000 : 6000
   const [shown, setShown] = useState(0)
   const [held, setHeld] = useState(false)
   const start = useRef<number | null>(null)
-  const count = slides.length
+  const count = own ? merchant.length : theme.length
   useEffect(() => {
     if (count < 2 || held || still) return
-    const timer = setInterval(() => setShown((i) => (i + 1) % count), 6000)
+    const timer = setInterval(() => setShown((i) => (i + 1) % count), every)
     return () => clearInterval(timer)
-  }, [count, held, still])
-
-  if (count === 0) {
-    const own = given(t('home.hero.image'))
-    return (
-      <section className={styles.heroPlain} aria-label={t('home.hero.label')}>
-        <div className={styles.heroCopy}>
-          <p className={styles.eyebrow}>{t('home.hero.eyebrow')}</p>
-          <h1 className={styles.heroTitle}>{t('home.hero.title')}</h1>
-          <p className={styles.heroLead}>{t('home.hero.lead')}</p>
-          <div className={styles.actions}>
-            <Link href={t('home.hero.link')} className={styles.button}>
-              {t('home.hero.shop')}
-              <ArrowIcon className={styles.buttonIcon} />
-            </Link>
-            <Link href="/about/" className={styles.ghost}>
-              {t('home.hero.story')}
-            </Link>
-          </div>
-        </div>
-        <div className={styles.heroPicture}>
-          {own ? (
-            <MerchantImage asset={t('home.hero.image')} alt={t('home.hero.imageAlt')} ratio={1} sizes="(min-width: 900px) 50vw, 100vw" className={styles.heroImage} />
-          ) : (
-            <ThemeImage src="modern-gold-lighting-collection.webp" alt={t('home.hero.imageAlt')} ratio={1} sizes="(min-width: 900px) 50vw, 100vw" className={styles.heroImage} />
-          )}
-        </div>
-      </section>
-    )
-  }
+  }, [count, held, still, every])
 
   const go = (i: number) => setShown(((i % count) + count) % count)
   const current = shown % count
@@ -121,7 +128,21 @@ export const HeroSlider = () => {
       }}
     >
       <div className={styles.slides} aria-live={held || still ? 'polite' : 'off'}>
-        {slides.map((s, i) => {
+        {own ? null : theme.map((s, i) => {
+          const on = i === current
+          return (
+            <div key={s.id} className={on ? styles.slideOn : styles.slide} role="group" aria-label={s.alt} aria-hidden={on ? undefined : true}>
+              <div className={styles.slideWide}>{s.picture}</div>
+              <div className={styles.slideSquare}>{s.phone}</div>
+              {on && given(s.link) ? (
+                <Link href={s.link} className={styles.slideCover}>
+                  <span className={styles.hidden}>{s.alt}</span>
+                </Link>
+              ) : null}
+            </div>
+          )
+        })}
+        {merchant.map((s, i) => {
           const phone = given(s.mobile) ? s.mobile : s.desktop
           const alt = given(s.alt) ? s.alt : given(s.title) ? s.title : ''
           const on = i === current
@@ -163,9 +184,13 @@ export const HeroSlider = () => {
             <ArrowIcon className={styles.arrowIcon} />
           </button>
           <div className={styles.dots}>
-            {slides.map((s, i) => (
-              <button key={s.desktop} type="button" className={i === current ? styles.dotOn : styles.dot} aria-label={t('home.hero.goTo', { name: given(s.alt) ? s.alt : given(s.title) ? s.title : t('home.hero.label') })} aria-current={i === current ? 'true' : undefined} onClick={() => go(i)} />
-            ))}
+            {own
+              ? merchant.map((s, i) => (
+                  <button key={s.desktop} type="button" className={i === current ? styles.dotOn : styles.dot} aria-label={t('home.hero.goTo', { name: given(s.alt) ? s.alt : given(s.title) ? s.title : t('home.hero.label') })} aria-current={i === current ? 'true' : undefined} onClick={() => go(i)} />
+                ))
+              : theme.map((s, i) => (
+                  <button key={s.id} type="button" className={i === current ? styles.dotOn : styles.dot} aria-label={t('home.hero.goTo', { name: s.alt })} aria-current={i === current ? 'true' : undefined} onClick={() => go(i)} />
+                ))}
           </div>
         </>
       ) : null}

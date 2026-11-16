@@ -451,7 +451,6 @@
 .navItemOpen {
   composes: navItem;
 }
-
 .caret {
   width: 12px;
   height: 12px;
@@ -498,23 +497,20 @@
   display: grid;
   box-sizing: border-box;
   width: min(100%, var(--page));
-  gap: var(--space-5);
+  gap: var(--space-3);
   margin-inline: auto;
-  grid-template-columns: minmax(200px, 260px) 1fr;
   padding: var(--space-4) var(--gutter) var(--space-5);
 }
 
-.megaLinks {
-  display: grid;
-  align-content: start;
-  gap: 2px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.megaHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
 }
 
 .megaTitle {
-  margin: 0 0 var(--space-1);
+  margin: 0;
   color: var(--muted);
   font-size: 12px;
   font-weight: 600;
@@ -537,15 +533,19 @@
 
 .megaAll {
   composes: megaLink;
-  margin-top: var(--space-1);
+  padding: 0;
   color: var(--accent);
+  font-size: 14px;
   font-weight: 600;
 }
 
 .megaCards {
   display: grid;
   gap: var(--space-3);
+  margin: 0;
+  padding: 0;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  list-style: none;
 }
 
 .megaCard {
@@ -560,7 +560,7 @@
 .megaPicture {
   overflow: hidden;
   border-radius: var(--radius);
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 16 / 10;
   background: var(--picture);
 }
 
@@ -580,40 +580,6 @@
   position: relative;
 }
 
-.more {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.moreMenu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  display: grid;
-  min-width: 220px;
-  box-sizing: border-box;
-  padding: var(--space-1);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  margin: 0;
-  background: var(--surface);
-  box-shadow: var(--shadow-lg);
-  list-style: none;
-}
-
-.moreLink {
-  display: block;
-  padding: 10px 12px;
-  border-radius: var(--radius-sm);
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.moreLink:hover {
-  background: var(--soft);
-  color: var(--accent);
-}
 
 /* ---------- Drawer (phones and tablets) ---------- */
 
@@ -1295,7 +1261,6 @@
 .tool:focus-visible,
 .megaLink:focus-visible,
 .megaCard:focus-visible,
-.moreLink:focus-visible,
 .drawerLink:focus-visible,
 .drawerSubLink:focus-visible,
 .drawerCard:focus-visible,

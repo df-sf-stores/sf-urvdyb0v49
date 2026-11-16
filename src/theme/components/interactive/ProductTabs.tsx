@@ -43,7 +43,7 @@ export const ProductTabs = () => {
       </div>
       {loading ? <GridPlaceholder label={t('shop.listing.loading')} count={4} /> : <ProductGrid products={list.products} columns={4} />}
       <div className={styles.bandFoot}>
-        <Link href="/collections/new-bestsellers/" className={styles.ghost}>
+        <Link href="/collections/all/" className={styles.ghost}>
           {t('home.products.more')}
           <ArrowIcon className={styles.buttonIcon} />
         </Link>

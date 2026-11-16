@@ -4,7 +4,7 @@ import { HeroSlider } from '../components/interactive/HeroSlider'
 import { ProductTabs } from '../components/interactive/ProductTabs'
 import { Layout } from '../components/Layout'
 
-const sectionIds = ['hero', 'categories', 'collections', 'products', 'story', 'visit', 'trust'] as const
+const sectionIds = ['hero', 'feature', 'feature2', 'feature3', 'categories', 'collections', 'products', 'story', 'visit', 'trust'] as const
 type SectionId = (typeof sectionIds)[number]
 
 const isSection = (id: string): id is SectionId => (sectionIds as readonly string[]).includes(id)
@@ -13,6 +13,12 @@ const Section = ({ id }: { id: SectionId }) => {
   switch (id) {
     case 'hero':
       return <HeroSlider />
+    case 'feature':
+      return <Story band={1} />
+    case 'feature2':
+      return <Story band={2} />
+    case 'feature3':
+      return <Story band={3} />
     case 'categories':
       return <Categories />
     case 'collections':

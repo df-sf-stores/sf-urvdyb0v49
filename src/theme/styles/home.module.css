@@ -250,7 +250,26 @@
   aspect-ratio: 4 / 5;
 }
 
+/* The theme's own banners: slider-N-mobile.webp, square, on phones; slider-N.webp, 3:1, shown whole from 768px. */
+.slideWide {
+  display: none;
+}
+
+.slideSquare {
+  display: block;
+  aspect-ratio: 1;
+}
+
 @media (min-width: 768px) {
+  .slideWide {
+    display: block;
+    aspect-ratio: 3 / 1;
+  }
+
+  .slideSquare {
+    display: none;
+  }
+
   .slideDesktop {
     display: block;
     aspect-ratio: 16 / 7;
@@ -270,6 +289,13 @@
 
 .slideOn .slideImage {
   animation: drift 9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* The phone pictures (slider-N-mobile.webp, 724 x 724) show whole at their own square size: no zoom, no crop. */
+.slideSquare .slideImage,
+.slideOn .slideSquare .slideImage {
+  animation: none;
+  object-fit: contain;
 }
 
 @keyframes drift {
@@ -609,6 +635,22 @@
 }
 
 /* ---------- Categories ---------- */
+
+.categoryGrid {
+  display: grid;
+  gap: var(--space-3) var(--space-2);
+  margin: 0;
+  padding: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .categoryGrid {
+    gap: var(--space-4) var(--space-3);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
 
 .category {
   display: grid;

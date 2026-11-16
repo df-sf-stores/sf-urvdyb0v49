@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import { Image, Link, MerchantImage, ThemeImage, useCollections, useStorefront, type CollectionCard } from '@dripfunnel/storefront-core/theme'
-import { Carousel } from './interactive/Carousel'
 import { ArrowIcon, CashIcon, LockIcon, ReturnIcon, TruckIcon } from './Icons'
 import styles from '../styles/home.module.css'
 
@@ -11,7 +10,7 @@ const slugOf = (href: string) => href.replace(/\/+$/, '').split('/').pop() ?? ''
 
 /**
  * Shop by categories: the collections home.categories.slugs lists, in that order (every collection when it says "none"), as
- * picture cards in a swipeable row; one the store doesn't have is left out. The collection whose
+ * picture cards in a grid (two across on phones, four from tablets up); one the store doesn't have is left out. The collection whose
  * address ends in home.categories.pictured shows the theme's lighting image instead of its own.
  */
 export const Categories = () => {
@@ -39,30 +38,30 @@ export const Categories = () => {
         </Link>
       </div>
       {status === 'loading' ? (
-        <ul className={styles.trackSmall} aria-busy="true" aria-label={t('shop.listing.loading')}>
-          {[0, 1, 2, 3, 4].map((i) => (
-            <li key={i} className={styles.slot}>
+        <ul className={styles.categoryGrid} aria-busy="true" aria-label={t('shop.listing.loading')}>
+          {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+            <li key={i}>
               <div className={styles.skeletonTile} />
             </li>
           ))}
         </ul>
       ) : (
-        <Carousel label={t('home.categories.title')} size="small">
+        <ul className={styles.categoryGrid} aria-label={t('home.categories.title')}>
           {collections.map((c) => (
-            <li key={c.id} className={styles.slot}>
+            <li key={c.id}>
               <Link href={c.href} className={styles.category}>
                 <span className={styles.categoryPicture}>
                   {slugOf(c.href) === pictured ? (
-                    <ThemeImage src="modern-gold-lighting-collection.webp" alt={t('home.categories.picturedAlt')} ratio={1} sizes="(min-width: 1024px) 18vw, 42vw" className={styles.cover} />
+                    <ThemeImage src="modern-gold-lighting-collection.webp" alt={t('home.categories.picturedAlt')} ratio={1} sizes="(min-width: 768px) 24vw, 48vw" className={styles.cover} />
                   ) : c.image ? (
-                    <Image image={c.image} alt={c.image.alt ?? c.name} ratio={1} sizes="(min-width: 1024px) 18vw, 42vw" className={styles.cover} />
+                    <Image image={c.image} alt={c.image.alt ?? c.name} ratio={1} sizes="(min-width: 768px) 24vw, 48vw" className={styles.cover} />
                   ) : null}
                 </span>
                 <span className={styles.categoryName}>{c.name}</span>
               </Link>
             </li>
           ))}
-        </Carousel>
+        </ul>
       )}
     </section>
   )
@@ -143,15 +142,52 @@ const StoryRow = ({ row, flip }: { row: Row; flip: boolean }) => {
   )
 }
 
-/** The brand story: up to three rows of picture and words, alternating sides; a row whose title is "-" is left out. */
-export const Story = () => {
+const rowSizes = '(min-width: 900px) 50vw, 100vw'
+
+/** The story rows home.feature.rows names (e.g. "row3, row2"), in that order. */
+const featured = (words: string) =>
+  words
+    .split(',')
+    .map((s) => s.trim())
+    .filter(given)
+
+/**
+ * The brand story: up to nine rows of picture and words, alternating sides; a row whose title is "-" is left out.
+ * `band` 1, 2 or 3 shows only the rows home.feature.rows, home.feature2.rows or home.feature3.rows names, in that order,
+ * wherever home.layout places feature, feature2 or feature3. Without it, the story shows every other row.
+ */
+export const Story = ({ band }: { band?: 1 | 2 | 3 }) => {
   const { t } = useStorefront()
-  const rows: Row[] = [
-    { image: t('home.story.row1.image'), alt: t('home.story.row1.alt'), eyebrow: t('home.story.row1.eyebrow'), title: t('home.story.row1.title'), body: t('home.story.row1.body'), cta: t('home.story.row1.cta'), link: t('home.story.row1.link') },
-    { image: t('home.story.row2.image'), alt: t('home.story.row2.alt'), eyebrow: t('home.story.row2.eyebrow'), title: t('home.story.row2.title'), body: t('home.story.row2.body'), cta: t('home.story.row2.cta'), link: t('home.story.row2.link'),
-      picture: <ThemeImage src="modern-gold-lighting-collection.webp" alt={t('home.story.row2.alt')} ratio={1.15} sizes="(min-width: 900px) 50vw, 100vw" className={styles.cover} /> },
-    { image: t('home.story.row3.image'), alt: t('home.story.row3.alt'), eyebrow: t('home.story.row3.eyebrow'), title: t('home.story.row3.title'), body: t('home.story.row3.body'), cta: t('home.story.row3.cta'), link: t('home.story.row3.link') },
-  ].filter((r) => given(r.title))
+  const bands = [featured(t('home.feature.rows')), featured(t('home.feature2.rows')), featured(t('home.feature3.rows'))]
+  const feature = band !== undefined
+  const own = feature ? bands[band - 1] ?? [] : []
+  const picked = bands.flat()
+  const all: (Row & { key: string })[] = [
+    { key: 'row1', image: t('home.story.row1.image'), alt: t('home.story.row1.alt'), eyebrow: t('home.story.row1.eyebrow'), title: t('home.story.row1.title'), body: t('home.story.row1.body'), cta: t('home.story.row1.cta'), link: t('home.story.row1.link') },
+    { key: 'row2', image: t('home.story.row2.image'), alt: t('home.story.row2.alt'), eyebrow: t('home.story.row2.eyebrow'), title: t('home.story.row2.title'), body: t('home.story.row2.body'), cta: t('home.story.row2.cta'), link: t('home.story.row2.link'),
+      picture: <ThemeImage src="modern-gold-lighting-collection.webp" alt={t('home.story.row2.alt')} ratio={1.15} sizes={rowSizes} className={styles.cover} /> },
+    { key: 'row3', image: t('home.story.row3.image'), alt: t('home.story.row3.alt'), eyebrow: t('home.story.row3.eyebrow'), title: t('home.story.row3.title'), body: t('home.story.row3.body'), cta: t('home.story.row3.cta'), link: t('home.story.row3.link'),
+      picture: <ThemeImage src="menu-wall-decor.webp" alt={t('home.story.row3.alt')} ratio={1.15} sizes={rowSizes} className={styles.cover} /> },
+    { key: 'row4', image: t('home.story.row4.image'), alt: t('home.story.row4.alt'), eyebrow: t('home.story.row4.eyebrow'), title: t('home.story.row4.title'), body: t('home.story.row4.body'), cta: t('home.story.row4.cta'), link: t('home.story.row4.link'),
+      picture: <ThemeImage src="category-decorative-showpieces.webp" alt={t('home.story.row4.alt')} ratio={1.15} sizes={rowSizes} className={styles.cover} /> },
+    { key: 'row5', image: t('home.story.row5.image'), alt: t('home.story.row5.alt'), eyebrow: t('home.story.row5.eyebrow'), title: t('home.story.row5.title'), body: t('home.story.row5.body'), cta: t('home.story.row5.cta'), link: t('home.story.row5.link'),
+      picture: <ThemeImage src="category-vases.webp" alt={t('home.story.row5.alt')} ratio={1.15} sizes={rowSizes} className={styles.cover} /> },
+    { key: 'row6', image: t('home.story.row6.image'), alt: t('home.story.row6.alt'), eyebrow: t('home.story.row6.eyebrow'), title: t('home.story.row6.title'), body: t('home.story.row6.body'), cta: t('home.story.row6.cta'), link: t('home.story.row6.link'),
+      picture: <ThemeImage src="category-shadow-boxes.webp" alt={t('home.story.row6.alt')} ratio={1.15} sizes={rowSizes} className={styles.cover} /> },
+    { key: 'row7', image: t('home.story.row7.image'), alt: t('home.story.row7.alt'), eyebrow: t('home.story.row7.eyebrow'), title: t('home.story.row7.title'), body: t('home.story.row7.body'), cta: t('home.story.row7.cta'), link: t('home.story.row7.link'),
+      picture: <ThemeImage src="collection-victorian-blue-pottery.webp" alt={t('home.story.row7.alt')} ratio={1.15} sizes={rowSizes} className={styles.cover} /> },
+    { key: 'row8', image: t('home.story.row8.image'), alt: t('home.story.row8.alt'), eyebrow: t('home.story.row8.eyebrow'), title: t('home.story.row8.title'), body: t('home.story.row8.body'), cta: t('home.story.row8.cta'), link: t('home.story.row8.link'),
+      picture: <ThemeImage src="collection-italian-design-lighting.webp" alt={t('home.story.row8.alt')} ratio={1.15} sizes={rowSizes} className={styles.cover} /> },
+    { key: 'row9', image: t('home.story.row9.image'), alt: t('home.story.row9.alt'), eyebrow: t('home.story.row9.eyebrow'), title: t('home.story.row9.title'), body: t('home.story.row9.body'), cta: t('home.story.row9.cta'), link: t('home.story.row9.link'),
+      picture: <ThemeImage src="collection-handblown-glass.webp" alt={t('home.story.row9.alt')} ratio={1.15} sizes={rowSizes} className={styles.cover} /> },
+  ].filter((r) => given(r.title) && r.title !== `home.story.${r.key}.title`)
+  // A row the content has no words for yet comes back as its key; it is left out rather than shown as code.
+  // home.story.last: rows moved to the end of the story, in that order.
+  const last = featured(t('home.story.last'))
+  const rest = all.filter((r) => !picked.includes(r.key))
+  const rows = feature
+    ? own.map((k) => all.find((r) => r.key === k)).filter((r): r is Row & { key: string } => r !== undefined)
+    : [...rest.filter((r) => !last.includes(r.key)), ...last.map((k) => rest.find((r) => r.key === k)).filter((r): r is Row & { key: string } => r !== undefined)]
   if (rows.length === 0) return null
   return (
     <section className={styles.story}>
