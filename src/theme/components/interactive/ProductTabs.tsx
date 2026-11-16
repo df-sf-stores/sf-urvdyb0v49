@@ -3,11 +3,10 @@
 import { useState } from 'react'
 import { Link, useProducts, useStorefront } from '@dripfunnel/storefront-core/theme'
 import { ArrowIcon } from '../Icons'
-import { ProductCard } from '../ProductCard'
-import { Carousel } from './Carousel'
+import { GridPlaceholder, ProductGrid } from '../ProductCard'
 import styles from '../../styles/home.module.css'
 
-/** New arrivals and the store's best-selling products (both from the catalogue), as a tabbed carousel. */
+/** New arrivals and the store's best-selling products (both from the catalogue), as a tabbed four-column grid. */
 export const ProductTabs = () => {
   const { t } = useStorefront()
   const newest = useProducts({ sort: 'newest', first: 12 })
@@ -42,25 +41,9 @@ export const ProductTabs = () => {
           </div>
         ) : null}
       </div>
-      {loading ? (
-        <ul className={styles.track} aria-busy="true" aria-label={t('shop.listing.loading')}>
-          {[0, 1, 2, 3].map((i) => (
-            <li key={i} className={styles.slot}>
-              <div className={styles.skeletonCard} />
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <Carousel label={active === 'newest' ? t('home.products.newest') : t('home.products.best')}>
-          {list.products.map((p) => (
-            <li key={p.id} className={styles.slot}>
-              <ProductCard product={p} />
-            </li>
-          ))}
-        </Carousel>
-      )}
+      {loading ? <GridPlaceholder label={t('shop.listing.loading')} count={4} /> : <ProductGrid products={list.products} columns={4} />}
       <div className={styles.bandFoot}>
-        <Link href={active === 'newest' ? '/collections/all/?sort=newest' : '/collections/all/'} className={styles.ghost}>
+        <Link href="/collections/new-bestsellers/" className={styles.ghost}>
           {t('home.products.more')}
           <ArrowIcon className={styles.buttonIcon} />
         </Link>

@@ -60,7 +60,7 @@
       "title": "Light, texture and the art of a calm room",
       "body": "Good interiors are built in layers: a warm pendant over the table, a sculptural lamp by the sofa, a frame that catches the eye. Our collections are designed to sit together, so it is easy to build a room that feels considered.",
       "cta": "Explore lighting",
-      "link": "/collections/all/"
+      "link": "/collections/lighting/"
     },
     "row3": {
       "image": "none",
@@ -75,13 +75,14 @@
   "collections": {
     "title": "Shop by collections",
     "eyebrow": "Curated",
-    "slugs": "none"
+    "slugs": "victorian-blue-pottery, italian-design-lighting, handblown-glass, modern-abstract-art, scandinavian-design, vastu-inspiration, steel-stainless"
   },
   "layout": "hero,categories,collections,products,story,visit,trust",
   "categories": {
     "eyebrow": "Explore",
     "title": "Shop by categories",
     "all": "View all",
+    "slugs": "wall-decor, lighting, table-decor, furniture, vases, candle-stands-holders, homeware, planters-plants",
     "pictured": "lighting",
     "picturedAlt": "Lighting collection: gold pendants, a chandelier, a wall sconce and table and floor lamps in a warm living room"
   },

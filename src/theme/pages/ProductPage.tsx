@@ -1,6 +1,5 @@
 import { Breadcrumbs, LegalNotices, Link, Price, RichText, useProduct, useStorefront } from '@dripfunnel/storefront-core/theme'
 import { BuyButtons } from '../components/interactive/BuyButtons'
-import { Carousel } from '../components/interactive/Carousel'
 import { Gallery } from '../components/interactive/Gallery'
 import { Options } from '../components/interactive/Options'
 import { Retry } from '../components/interactive/Retry'
@@ -8,7 +7,7 @@ import { WishlistHeart } from '../components/interactive/WishlistView'
 import { BoxIcon, ImageCheckIcon, ReturnIcon, SocialIcon, VideoIcon } from '../components/Icons'
 import { Layout } from '../components/Layout'
 import { Notice } from '../components/Notice'
-import { onSale, ProductCard } from '../components/ProductCard'
+import { onSale, ProductGrid } from '../components/ProductCard'
 import home from '../styles/home.module.css'
 import shop from '../styles/shop.module.css'
 import styles from '../styles/product.module.css'
@@ -194,13 +193,7 @@ export const ProductPage = () => {
               {t('shop.product.related')}
             </h2>
           </div>
-          <Carousel label={t('shop.product.related')}>
-            {product.related.map((p) => (
-              <li key={p.id} className={home.slot}>
-                <ProductCard product={p} />
-              </li>
-            ))}
-          </Carousel>
+          <ProductGrid products={product.related} columns={4} />
         </section>
       ) : null}
     </Layout>

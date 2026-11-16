@@ -377,7 +377,7 @@ const SearchLayer = ({ open, onClose, items }: { open: boolean; onClose: () => v
         {items.length ? (
           <div className={styles.searchChips}>
             <p className={styles.searchChipsTitle}>{t('common.tools.searchPopular')}</p>
-            {items.slice(0, 8).map((item) => (
+            {items.slice(0, 4).map((item) => (
               <Link key={item.id} href={item.href} className={styles.searchChip}>
                 {item.label}
               </Link>

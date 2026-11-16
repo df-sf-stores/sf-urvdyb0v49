@@ -10,13 +10,19 @@ export const given = (words: string) => words.trim() !== '' && words.trim() !== 
 const slugOf = (href: string) => href.replace(/\/+$/, '').split('/').pop() ?? ''
 
 /**
- * Shop by categories: every collection the store shows, as picture cards in a swipeable row. The collection whose
+ * Shop by categories: the collections home.categories.slugs lists, in that order (every collection when it says "none"), as
+ * picture cards in a swipeable row; one the store doesn't have is left out. The collection whose
  * address ends in home.categories.pictured shows the theme's lighting image instead of its own.
  */
 export const Categories = () => {
   const { t } = useStorefront()
-  const { collections, status } = useCollections({ first: 24 })
+  const { collections: all, status } = useCollections({ first: 50 })
   const pictured = t('home.categories.pictured').trim()
+  const wanted = t('home.categories.slugs')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(given)
+  const collections = wanted.length ? wanted.map((slug) => all.find((c) => slugOf(c.href) === slug)).filter((c): c is CollectionCard => c !== undefined) : all
   if (status !== 'loading' && collections.length === 0) return null
   return (
     <section className={styles.band} aria-labelledby="home-categories">
