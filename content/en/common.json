@@ -74,5 +74,12 @@
     "dismiss": "Hide announcements",
     "pause": "Pause announcements",
     "play": "Play announcements"
+  },
+  "floating": {
+    "whatsapp": "Chat with us on WhatsApp",
+    "whatsappHover": "Chat with us",
+    "whatsappLink": "https://wa.me/910000000000",
+    "top": "Back to top",
+    "topAfter": "0.08"
   }
 }

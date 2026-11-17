@@ -136,6 +136,16 @@ export const ZoomIcon = ({ className }: { className?: string | undefined }) => (
   </svg>
 )
 
+/** WhatsApp's mark, shared by SocialIcon and the floating chat button. */
+const whatsappPath =
+  'M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1l-.9 1.2c-.2.2-.3.2-.6.1a8 8 0 01-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4a3.3 3.3 0 00-1 2.5c0 1.5 1.1 2.9 1.2 3.1.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.6.7.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4l-.8-.5zM12 21.8a9.8 9.8 0 01-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1112 21.8zM20.5 3.5A12 12 0 001.7 18l-1.7 6 6.2-1.6A12 12 0 0024 12a12 12 0 00-3.5-8.5z'
+
+export const WhatsAppIcon = ({ className }: { className?: string | undefined }) => (
+  <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d={whatsappPath} />
+  </svg>
+)
+
 /** A social network's mark, filled; a network core doesn't know draws a plain link glyph. */
 export const SocialIcon = ({ network, className }: { network: string; className?: string | undefined }) => {
   const n = network.toLowerCase()
@@ -150,7 +160,7 @@ export const SocialIcon = ({ network, className }: { network: string; className?
       ) : n === 'x' || n === 'twitter' ? (
         <path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.2-8.3L1.8 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z" />
       ) : n === 'whatsapp' ? (
-        <path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1l-.9 1.2c-.2.2-.3.2-.6.1a8 8 0 01-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4a3.3 3.3 0 00-1 2.5c0 1.5 1.1 2.9 1.2 3.1.2.2 2.1 3.2 5.1 4.5 1.9.8 2.6.9 3.6.7.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4l-.8-.5zM12 21.8a9.8 9.8 0 01-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1112 21.8zM20.5 3.5A12 12 0 001.7 18l-1.7 6 6.2-1.6A12 12 0 0024 12a12 12 0 00-3.5-8.5z" />
+        <path d={whatsappPath} />
       ) : n === 'tiktok' ? (
         <path d="M16.6 5.8A4.3 4.3 0 0115.5 3h-3.1v12.4a2.6 2.6 0 11-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.7 5.7 0 104.9 5.7V9.1a7.3 7.3 0 004.3 1.4V7.4a4.3 4.3 0 01-3.2-1.6z" />
       ) : n === 'pinterest' ? (

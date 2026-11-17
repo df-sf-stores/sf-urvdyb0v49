@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { ConsentBanner, ConsentSettingsButton, Link, PreviewBanner, StoreLogo, ThemeImage, useStorefront } from '@dripfunnel/storefront-core/theme'
+import { FloatingActions } from './interactive/FloatingActions'
 import { FooterGroup } from './interactive/FooterGroup'
 import { Masthead } from './interactive/Masthead'
 import { MailIcon, PhoneIcon, PinIcon, SocialIcon } from './Icons'
@@ -161,6 +162,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           </div>
         </div>
       </div>
+      <FloatingActions />
       <ConsentBanner t={t} className={styles.consent} />
     </div>
   )
